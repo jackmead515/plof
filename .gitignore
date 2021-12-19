@@ -1,0 +1,11 @@
+.DS_Store
+
+venv
+*.pyc
+__pycache__
+
+.vscode/
+*.egg-info
+*.omit
+*.tar.gz
+*.zip
