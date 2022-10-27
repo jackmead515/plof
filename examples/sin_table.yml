@@ -1,0 +1,22 @@
+pipe:
+  type: sin
+  config:
+    poll: 500ms
+    amplitude: 100
+parse:
+  - type: cast
+    config:
+      cast: float
+  - type: rolling_average
+    config:
+      window: 10
+plot:
+  type: table
+  config:
+    columns:
+      - name: time
+        pointer: /parse/time
+      - name: value
+        pointer: /parse/data
+      - name: elapsed
+        pointer: /parse/elapsed

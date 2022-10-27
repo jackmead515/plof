@@ -1,0 +1,87 @@
+{
+    "$id": "http://schemas.com/v1/plof.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "Plof Config",
+    "description": "Configuration for a plof command",
+    "examples": [
+        {
+            "pipe": {
+                "type": "sin",
+                "config": {
+                    "amplitude": 100,
+                    "poll": "500ms"
+                }
+            },
+            "parse": [
+                {
+                    "type": "cast",
+                    "config": "float"
+                },
+                {
+                    "type": "clamp",
+                    "config": {
+                        "min": 10,
+                        "max": 90
+                    }
+                },
+                {
+                    "type": "rolling_average",
+                    "config": {
+                        "window": 10
+                    }
+                }
+            ],
+            "plot": {
+                "type": "line",
+                "config": {
+                    "title": "My Plot",
+                    "x": "/time",
+                    "y": "/data"
+                }
+            }
+        }
+    ],
+    "required": [
+        "pipe"
+    ],
+    "type": "object",
+    "properties": {
+        "pipe": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "config": {
+                    "type": "object"
+                }
+            }
+        },
+        "parse": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "config": {
+                        "type": "object"
+                    }
+                }
+            }
+        },
+        "plot": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "config": {
+                    "type": "object"
+                }
+            }
+        }
+    },
+    "additionalProperties": false
+}

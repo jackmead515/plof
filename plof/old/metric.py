@@ -68,6 +68,9 @@ class Aggregator(Metric):
         }
 
 
-    def compute(self, values) -> float:
-        return self.aggregators[self.config.metric].compute(values)
+    def compute(self, values) -> dict:
+        metrics = {}
+        for metric in self.aggregators.keys():
+            metrics[metric] = self.aggregators[metric].compute(values)
+        return metrics
 

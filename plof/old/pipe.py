@@ -16,16 +16,16 @@ class Pipe:
         else:
             self.pipe = NetworkPipe(config)
 
-    def read(self) -> 'list[str]':
+    def read(self) -> deque:
         start = time.perf_counter()
 
         buffered = deque(maxlen=self.config.buffer_size)
-        while start + self.config.timeout >= time.perf_counter():
+        while start + self.config.refresh >= time.perf_counter():
             message = self.pipe.recv()
             if message is not None:
                 buffered.append(message)
-        
-        return list(buffered)
+
+        return buffered
 
 
 class NetworkPipe:

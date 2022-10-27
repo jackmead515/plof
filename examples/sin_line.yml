@@ -1,0 +1,18 @@
+pipe:
+  type: sin
+  config:
+    poll: 500ms
+    amplitude: 100
+parse:
+  - type: cast
+    config:
+      cast: float
+  - type: rolling_average
+    config:
+      window: 10
+plot:
+  type: line
+  config:
+    title: "Sin Function (rolling average)"
+    x: /parse/time
+    y: /parse/data

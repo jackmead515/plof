@@ -3,6 +3,7 @@ import json
 from plof.config import Config, ContentType
 
 import jq
+import numpy
 
 def safe_cast(value, cast, default=None):
     try:
@@ -26,16 +27,16 @@ class Parser:
         #self.json_parser = jq.compile(self.config.json_field)
 
 
-    def parse_raw(self, values):
+    def parse_raw(self, values) -> numpy.array:
         parsed = []
         for value in values:
             pvalue = safe_cast(value, float)
             if pvalue is not None:
                 parsed.append(pvalue)
-        return parsed
+        return numpy.array(parsed)
 
     
-    def parse_json(self, values):
+    def parse_json(self, values) -> numpy.array:
         parsed = []
         for value in values:
             jvalue = self.json_parser.input(value).first()
@@ -45,11 +46,11 @@ class Parser:
         return parsed
 
 
-    def parse_csv(self, values):
+    def parse_csv(self, values) -> numpy.array:
         pass
 
     
-    def parse(self, values) -> 'list[float]':
+    def parse(self, values) -> numpy.array:
 
         if self.config.content_type == ContentType.RAW:
             return self.parse_raw(values)

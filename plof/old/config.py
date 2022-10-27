@@ -1,32 +1,6 @@
 import argparse
-from dataclasses import dataclass
-from enum import Enum
 
-
-class ContentType(Enum):
-    RAW = 'raw'
-    JSON = 'json'
-    CSV = 'csv'
-
-
-@dataclass
-class Config:
-    host: str
-    port: int
-    pipe: bool
-    timeout: float
-    delimiter: str
-    refresh: float
-    buffer_size: int
-    metric: str
-    content_type: ContentType
-    json_field: str
-    csv_field: str
-    y_upper_limit: float
-    y_lower_limit: float
-    x_limit: float
-    default_value: float
-
+from models import Config, ContentType
 
 config: Config = None
 
@@ -38,7 +12,12 @@ def get_config() -> Config:
 def initialize():
     global config
 
-    parser = argparse.ArgumentParser(description="Plof -> Graph To Terminal")
+    parser = argparse.ArgumentParser(description="Plof -> Pipe, Parse, Plot")
+
+    parser.add_argument('-pi', '--pipe', dest="pipe", type=str, help="YAML config of the pipe")
+    parser.add_argument('-pa', '--parse', dest="parse", type=str, help="YAML config of the parse")
+    parser.add_argument('-pl', '--plot', dest="plot", type=str, help="YAML config of the plot")
+    
 
     parser.add_argument("-ylim", dest="ylim", type=str, default="1.0,100.0", help="Limit the y axis too min and max")
     parser.add_argument("-xlim", dest="xlim", type=float, default=100.0, help="Limit the points on x axis")

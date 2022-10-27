@@ -1,12 +1,12 @@
 from collections import deque
-
-import plotext as plot
+import time
 
 from plof.pipe import Pipe
 from plof.metric import Aggregator
 from plof.parse import Parser
-
 from plof.config import initialize, get_config
+
+import plotext as plot
             
 def main():
     initialize()
@@ -21,7 +21,7 @@ def main():
     y = deque(maxlen=config.buffer_size)
     [y.append(config.default_value) for _ in x]
         
-    plot.title(f"{config.metric} of value every {config.timeout} seconds")
+    plot.title(f"{config.metric} of value every {config.refresh} seconds")
     plot.clear_color()
     plot.grid(False, False)
     plot.frame(True)
@@ -30,14 +30,16 @@ def main():
     while True:
         values = pipe.read()
         values = parser.parse(values)
-        value = aggregator.compute(values)
+        values = aggregator.compute(values)
 
-        y.appendleft(value)
+        y.appendleft(values.get(config.metric))
 
         plot.clear_data()
         plot.clear_terminal()
         plot.plot(x, list(y), marker=".")
         plot.show()
+
+        print(values)
 
 
 if __name__ == "__main__":
