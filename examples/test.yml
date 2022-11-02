@@ -6,23 +6,10 @@ pipe:
 parse:
   - type: cast
     config:
-      cast: float
-  - type: rolling_average
-    config:
-      window: 10
-  - type: cast
-    config:
-      cast: str
-  - type: cast
-    config:
       cast: bytes
-  - type: compress
-    config:
-      type: gzip
-      level: 9
 plot:
-  type: file
+  type: tcp
   config:
-    path: "./data.txt"
+    host: 127.0.0.1
+    port: 4545
     pointer: /parse/data
-    mode: a

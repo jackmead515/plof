@@ -25,8 +25,6 @@ if __name__ == "__main__":
 
     validate(config, schema)
 
-    print(config)
-
     # type: file
     #     config:
     #         path: "./data.txt"

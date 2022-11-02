@@ -6,6 +6,8 @@ def plot(config):
 
     x_pointer = line_config.get('x')
     y_pointer = line_config.get('y')
+    max_points = line_config.get('points', 20)
+    marker = line_config.get('marker', '·')
 
     plotext.title(line_config.get('title'))
     plotext.clear_color()
@@ -29,13 +31,13 @@ def plot(config):
         xs.append(x)
         ys.append(y)
 
-        if len(xs) > 100:
+        if len(xs) > max_points:
             xs.pop(0)
             ys.pop(0)
 
         plotext.clt()
         plotext.cld()
-        plotext.plot(xs, ys, marker='·')
+        plotext.plot(xs, ys, marker=marker)
         plotext.show()
 
     return plotter

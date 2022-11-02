@@ -10,8 +10,12 @@ parse:
   - type: rolling_average
     config:
       window: 10
+  - type: python
+    config:
+      code: "lambda d: f\"{d['parse']['data']}\t{d['parse']['time']}\""
 plot:
   type: file
   config:
     path: "./data.txt"
     mode: a
+    pointer: /parse/data

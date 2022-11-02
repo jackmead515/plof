@@ -6,6 +6,7 @@ from jsonpointer import resolve_pointer
 
 import stages.plot.file_plot as file_plot
 import stages.plot.line_plot as line_plot
+import stages.plot.tcp_plot as tcp_plot
 
 def pretty_table(rows, column_count, column_spacing=4):
     aligned_columns = []
@@ -54,6 +55,9 @@ def plot(config):
 
     if config.get('plot').get('type') == 'file':
         return file_plot.plot(config)
+
+    if config.get('plot').get('type') == 'tcp':
+        return tcp_plot.plot(config)
 
     # default is to just print the state to standard output
     def plotter(state):

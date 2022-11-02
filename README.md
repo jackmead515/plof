@@ -43,21 +43,10 @@ In keeping with the "terminal only" mentality, I like to pair it with `tmux` and
 
 ## Examples
 
-### Load from a file, or pass YAML directly. No command line arguments to remember!
+### Load from a file. No command line arguments to remember!
 
 ```
 plof ~/.plof/monitor-sensor-metrics.yml
-```
-
-OR
-
-```
-plof \
-    pipe: \
-        type: http \
-        config: \
-            url: http://sensor.01.com/metrics \
-            poll: 5s
 ```
 
 But, there is some help avaliable if you want it
@@ -69,106 +58,124 @@ plof --help
 ### MQTT JSON data to a line graph
 
 ```
-plof \
-    pipe: \
-        type: mqtt \
-        config: \
-            url: mqtt://127.0.0.1:1883 \
-            topic: sensor/1/metrics \
-    parse: \
-        type: json \
-        config: \
-            expression: .data[0].temperature \
-            datatype: float \
-            buffer: 5 \
-            aggregate: avg \
-    plot: \
-        type: line \
-        refresh: 5s
+pipe:
+    type: mqtt
+    config:
+        url: mqtt://127.0.0.1:1883
+        topic: sensor/1/metrics
+parse:
+    type: json
+    config:
+        expression: .data[0].temperature
+        datatype: float
+        buffer: 5
+        aggregate: avg
+plot:
+    type: line
+    refresh: 5s
 ```
 
 ### HTTP get yaml data and display in a table
 
 ```
-plof \
-    pipe: \
-        type: http \
-        config: \
-            url: http://sensor.com/1/metrics \
-            poll: 5s \
-    parse: \
-        type: yaml \
-        config: \
-            expression: .data \
-            datatype: csv \
-    plot: \
-        type: table \
-        refresh: 5s
+pipe:
+    type: http
+    config:
+        url: http://sensor.com/1/metrics
+        poll: 5s
+parse:
+    type: yaml
+    config:
+        expression: .data
+        datatype: csv
+plot:
+    type: table
+    refresh: 5s
 ```
 
 ### Listen to a serial port for total bitrate in a bar graph
 
 ```
-plof \
-    pipe: \
-        type: serial \
-        config: \
-            file: "/dev/USB01" \
-            baudrate: 9600 \
-    parse: \ 
-        type: raw \
-        config: \
-            buffer: 5s \
-            aggregate: total \
-    plot: \
-        type: bar \
-        title: "Total Bitrate (5s) on /dev/USB01" \
-        refresh: 5s
+pipe:
+    type: serial
+    config:
+        file: "/dev/USB01"
+        baudrate: 9600
+parse: 
+    type: raw
+    config:
+        buffer: 5s
+        aggregate: total
+plot:
+    type: bar
+    title: "Total Bitrate (5s) on /dev/USB01"
+    refresh: 5s
 ```
 
 ### Pipe data from journalctl command, parse errors with grep, find total lines, and graph as a line
 
 ```
-plot \
-    pipe: \
-        type: exec \
-        config: \
-            command: journalctl -f -u systemd-service \
-    parse: \
-        type: exec \
-        config: \
-            command: "grep error" \
-            deliminator: "\n" \
-            buffer: 5s \
-            aggregate: total \
-    plot: \
-        type: line \
-        refresh: 5s
+pipe:
+    type: exec
+    config:
+        command: journalctl -f -u systemd-service
+parse:
+    type: exec
+    config:
+        command: "grep error"
+        deliminator: "\n"
+        buffer: 5s
+        aggregate: total
+plot:
+    type: line
+    refresh: 5s
+```
+
+### Pipe data into gnuplot (has to be installed seperately)
+
+```
+pipe:
+  type: sin
+  config:
+    poll: 500ms
+    amplitude: 100
+parse:
+  - type: cast
+    config:
+      cast: float
+  - type: rolling_average
+    config:
+      window: 10
+plot:
+  type: gnuplot
+  config:
+    refresh: 5s
 ```
 
 ### Apply multiple parse commands
 
-plot \
-    pipe: \
-        type: exec \
-        config: \
-            command: journalctl -f -u systemd-service \
-    parse: \ 
-        - type: split \
-        config: \
-            deliminator: "\n" \
-        - type: cast \
-        config: \
-            cast: json \
-        - type: pointer \
-        config: \
-            pointer: "/data/sensor" \
-        - type: rolling_average \
-        config: \
-            window: 10 \
-    plot: \
-        type: line \
-        refresh: 5s
+```
+pipe:
+    type: exec
+    config:
+        command: journalctl -f -u systemd-service
+parse:
+    - type: split
+    config:
+        deliminator: "\n"
+    - type: cast
+    config:
+        cast: json
+    - type: pointer
+    config:
+        pointer: "/data/sensor"
+    - type: rolling_average
+    config:
+        window: 10
+plot:
+    type: line
+    refresh: 5s
+```
 
 ## Other
 

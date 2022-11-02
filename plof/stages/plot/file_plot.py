@@ -18,9 +18,11 @@ def plot(config):
     def plotter(state):
         try:
             if pointer:
-                file.write(f'{resolve_pointer(state, pointer)}\n')
+                file.write(f'{resolve_pointer(state, pointer)}')
             else:
-                file.write(f'{state}\n')
+                file.write(f'{state}')
+            
+            file.write('\n')
             file.flush()
         except:
             file.close()
