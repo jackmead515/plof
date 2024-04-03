@@ -8,6 +8,8 @@
 - [] -pipe for stdin (will block on buffering though)
 - [x] -refresh rate of refresh for graph
 - [] -title for title of graph
+- [] SNMP, server-sent events, serial, mqtt, kafka
+- [] add data sync to save data to a file, database, datalake, event source
 
 ## Overview
 
