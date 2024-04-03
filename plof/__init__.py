@@ -25,11 +25,6 @@ if __name__ == "__main__":
 
     validate(config, schema)
 
-    # type: file
-    #     config:
-    #         path: "./data.txt"
-    #         mode: a
-
     piper = pipe.pipe(config)
     parser = parse.parse(config)
     plotter = plot.plot(config)

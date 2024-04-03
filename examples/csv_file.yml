@@ -1,0 +1,17 @@
+pipe:
+  type: cell4g
+  config:
+    port: /dev/ttyUSB4
+    baudrate: 115200
+    stopbits: 1
+    timeout: 2
+    write_timeout: 2
+    poll_time: 5
+parse: []
+plot:
+  type: csv
+  config:
+    path: "./celldata.csv"
+    headers: ['Score', 'RSSI', 'Mode', 'Format', 'Operator', 'Access Technology']
+    pointer: /parse/data
+    mode: 'a'
