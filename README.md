@@ -1,3 +1,4 @@
+# Developing for BlueOS extension use
 # plof -> plotext command line tool
 
 - [x] -xlim and -ylim limits
